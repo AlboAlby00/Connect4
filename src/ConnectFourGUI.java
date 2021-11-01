@@ -31,24 +31,25 @@ public class ConnectFourGUI {
     static ImageIcon greyPng = getAndResizeImageIcon("grey.png",100,100);
 
     private final Board bd = new Board();
-    private final Player humanPlayer;
-    private final Player AIPlayer;
+    private final Player player1;
+    private final Player player2;
 
     ConnectFourGUI(){
 
-        this.AIPlayer = new MinimaxAI();
-        this.humanPlayer = new Human();
+        int depth = 7;
+        this.player1 = new MinimaxAI(Color.RED,depth);
+        this.player2 = new Human();
         this.frame = new JFrame();
         this.frame.setLayout(new FlowLayout(FlowLayout.LEFT));
 
-        this.currentPlayer = AIPlayer.getColor();
+        this.currentPlayer = player1.getColor();
         this.hasWinner=false;
         this.isFull=false;
 
 
         InitializeBoard();
         InitializeMenu();
-        InitializeDepthSlider(5);
+        InitializeDepthSlider(depth);
         setTimer();
         this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.frame.setVisible(true);
@@ -76,7 +77,7 @@ public class ConnectFourGUI {
             @Override
             public void stateChanged(ChangeEvent e) {
                 int value = depthSlider.getValue();
-                AIPlayer.setDepthValue(value);
+                player1.setDepthValue(value);
                 depthLabel.setText("Current depth value: "+value);
             }
         });
@@ -85,7 +86,7 @@ public class ConnectFourGUI {
     }
 
     private void CheckWinner(){
-        if(this.bd.isWinner(humanPlayer.getColor())||this.bd.isWinner(AIPlayer.getColor())){
+        if(this.bd.isWinner(player1.getColor())||this.bd.isWinner(player2.getColor())){
             showWinnerMessage();
         }
         if(bd.isFull()){
@@ -104,9 +105,9 @@ public class ConnectFourGUI {
             buttons[i].addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent actionEvent) {
-                    if(currentPlayer.equals(humanPlayer.getColor())&&!hasWinner&&!isFull){
+                    if(currentPlayer.equals(player2.getColor())&&!hasWinner&&!isFull){
                         JButtonCustomed btn = (JButtonCustomed)  actionEvent.getSource();
-                        if(humanPlayer.move(bd,btn.getIndex())){
+                        if(player2.move(bd,btn.getIndex())){
                             TogglePlayer();
                             RefreshJBoard();}
                     }
@@ -155,7 +156,7 @@ public class ConnectFourGUI {
         aiStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                currentPlayer=AIPlayer.getColor();
+                currentPlayer=player1.getColor();
                 ResetGame();
             }
         });
@@ -163,7 +164,7 @@ public class ConnectFourGUI {
         humanStart.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                currentPlayer = humanPlayer.getColor();
+                currentPlayer = player1.getColor();
                 ResetGame();
             }
         });
@@ -201,9 +202,16 @@ public class ConnectFourGUI {
         this.timer = new Timer(500, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(currentPlayer.equals(AIPlayer.getColor())&&!hasWinner&&!isFull){
+                if(currentPlayer.equals(player1.getColor())&&!hasWinner&&!isFull&&player1 instanceof AI){
 
-                    AIPlayer.move(bd);
+                    player1.move(bd);
+                    RefreshJBoard();
+                    CheckWinner();
+                    TogglePlayer();
+                }
+                if(currentPlayer.equals(player2.getColor())&&!hasWinner&&!isFull&&player2 instanceof AI){
+
+                    player2.move(bd);
                     RefreshJBoard();
                     CheckWinner();
                     TogglePlayer();

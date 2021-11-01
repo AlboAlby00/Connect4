@@ -1,6 +1,6 @@
 
 
-public class MinimaxAI extends Player{
+public class MinimaxAI extends AI{
 
     private int depthValue;
 

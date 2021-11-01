@@ -1,8 +1,8 @@
-public class MontecarloAI extends Player{
+public class MontecarloAI extends AI{
 
     private int numSimulations;
     MontecarloAI(Color c, int numSimulations){
-        super(c);
+        this.c = c;
         this.numSimulations=numSimulations;
     }
 
