@@ -37,8 +37,9 @@ public class ConnectFourGUI {
     ConnectFourGUI(){
 
         int depth = 7;
-        this.player1 = new MinimaxAI(Color.RED,depth);
-        this.player2 = new Human();
+        //this.player2 = new MinimaxAI(Color.RED,depth);
+        this.player1= new MontecarloAI(Color.RED,500);
+        this.player2 = new Human(Color.YELLOW);
         this.frame = new JFrame();
         this.frame.setLayout(new FlowLayout(FlowLayout.LEFT));
 
@@ -209,6 +210,7 @@ public class ConnectFourGUI {
                     CheckWinner();
                     TogglePlayer();
                 }
+
                 if(currentPlayer.equals(player2.getColor())&&!hasWinner&&!isFull&&player2 instanceof AI){
 
                     player2.move(bd);

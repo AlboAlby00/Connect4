@@ -36,7 +36,7 @@ public class Board {
         if(c!=Color.EMPTY&&this.isFree(pos)) {
             this.matrix[full[pos]][pos] = c;
             full[pos]++;
-        }
+        } else System.out.println("Error while inserting at position "+pos);
         return this;
     }
 
@@ -57,8 +57,15 @@ public class Board {
         }
     }
 
+    public void printFull(){
+        for(int i : this.full){
+            System.out.print(Integer.toString(i)+" ");
+        }
+        System.out.print("\n");
+    }
+
     public int cellLeft(){
-        int freeCell=8*7;
+        int freeCell=6*7;
         for(int i : this.full) freeCell -= i;
         return freeCell;
     }
@@ -67,10 +74,7 @@ public class Board {
         return this.cellLeft() == 0;
     }
 
-    public boolean cellIsFree(int col){
-        if(col<0||col>6) return false;
-        return this.full[col]<6;
-    }
+
 
     public boolean isWinner(Color c){
         //checking horizontally
@@ -121,9 +125,17 @@ public class Board {
         for(int i=0; i<7;i++) this.full[i]=0;
     }
 
+    @Override
+    protected Object clone()  {
+        Board bd = new Board();
+        for(int col=0;col<7;col++) {
+            for (int lin = 0; lin < 6; lin++) {
+                bd.matrix[lin][col]=this.matrix[lin][col];
+            }
+        }
 
-
-
-
+        for(int i=0;i<7;i++) bd.full[i]=this.full[i];
+        return bd;
+    }
 
 }

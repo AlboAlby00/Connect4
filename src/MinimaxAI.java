@@ -140,10 +140,6 @@ public class MinimaxAI extends AI{
         //System.out.println(pos);
 
         return super.move(bd, pos);
-
-
-
-
     }
 
 }
