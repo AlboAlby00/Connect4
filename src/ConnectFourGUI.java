@@ -25,6 +25,7 @@ public class ConnectFourGUI {
     private JPanel gridPanel;
     private Timer timer;
     private int depth = 7;
+    private int nSimulations = 1000;
 
 
     private Color currentPlayer;
@@ -36,8 +37,8 @@ public class ConnectFourGUI {
     static ImageIcon greyPng = getAndResizeImageIcon("grey.png",100,100);
 
     private final Board bd = new Board();
-    private final Player player1;
-    private final Player player2;
+    private Player player1;
+    private Player player2;
 
     ConnectFourGUI(){
 
@@ -56,6 +57,7 @@ public class ConnectFourGUI {
         InitializeBoard();
         InitializeMenu();
         InitializeDepthSlider(depth);
+        InitializeAITypeSwitch();
         setTimer();
         this.frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.frame.setVisible(true);
@@ -97,11 +99,19 @@ public class ConnectFourGUI {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 int state = e.getStateChange();
-                if(state==ItemEvent.SELECTED){
+                if(state==ItemEvent.DESELECTED){
                     player1 = new MinimaxAI(Color.RED, depth);
+                    JToggleButton tButt = (JToggleButton) e.getSource();
+                    tButt.setText("Minimax AI");
+                }
+                if(state==ItemEvent.SELECTED){
+                    player1 = new MontecarloAI(Color.RED, nSimulations);
+                    JToggleButton tButt = (JToggleButton) e.getSource();
+                    tButt.setText("Montecarlo AI");
                 }
             }
         });
+        this.frame.add(this.AITypeSwitch);
 
     }
 

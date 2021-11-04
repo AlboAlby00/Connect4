@@ -30,7 +30,7 @@ public class MontecarloAI extends AI{
                 col=col.opposite();
                 if(newBd.isFull()) {
                     val+=0;
-                    System.out.println("full");
+                    //System.out.println("full");
                     break;
                 }
                 if(newBd.isWinner(this.getColor())) {
