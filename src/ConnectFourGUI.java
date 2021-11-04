@@ -4,6 +4,8 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class ConnectFourGUI {
 
@@ -14,6 +16,7 @@ public class ConnectFourGUI {
     private JMenuItem aiStart;
     private JMenuItem humanStart;
     private JSlider depthSlider;
+    private JToggleButton AITypeSwitch;
     private JLabel depthLabel;
     private JFrame frame;
     private JLabel[][] cells;
@@ -21,6 +24,8 @@ public class ConnectFourGUI {
     private JPanel buttonPanel;
     private JPanel gridPanel;
     private Timer timer;
+    private int depth = 7;
+
 
     private Color currentPlayer;
     private boolean hasWinner;
@@ -36,9 +41,9 @@ public class ConnectFourGUI {
 
     ConnectFourGUI(){
 
-        int depth = 7;
-        //this.player2 = new MinimaxAI(Color.RED,depth);
-        this.player1= new MontecarloAI(Color.RED,500);
+
+        this.player1 = new MinimaxAI(Color.RED,depth);
+        //this.player1= new MontecarloAI(Color.RED,500);
         this.player2 = new Human(Color.YELLOW);
         this.frame = new JFrame();
         this.frame.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -84,6 +89,20 @@ public class ConnectFourGUI {
         });
         this.frame.add(this.depthSlider);
         this.frame.add(this.depthLabel);
+    }
+
+    private void InitializeAITypeSwitch(){
+        this.AITypeSwitch=new JToggleButton("Minimax AI");
+        this.AITypeSwitch.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                int state = e.getStateChange();
+                if(state==ItemEvent.SELECTED){
+                    player1 = new MinimaxAI(Color.RED, depth);
+                }
+            }
+        });
+
     }
 
     private void CheckWinner(){
